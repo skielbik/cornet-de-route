@@ -34,7 +34,7 @@ Le préfixe `/fr/` laisse la place à `/en/` pour la version anglaise.
 
 ## Mise en ligne sur Cloudflare Pages
 
-1. Créer le dépôt GitHub `cornet-de-route` (privé) et y pousser ce dossier.
+1. Dépôt GitHub : `skielbik/cornet-de-route` (privé).
 2. Cloudflare › Workers & Pages › Créer › Pages › Connecter le dépôt.
 3. Réglages de build : commande `node src/build.mjs`, dossier de sortie `dist`, variable `NODE_VERSION` = `22`.
 4. Domaines personnalisés : ajouter `cornetderoute.com` (et `www`). Pour `cornetderoute.fr`, une règle de redirection Cloudflare vers `https://cornetderoute.com` (le fichier `_redirects` ne gère pas les domaines).
@@ -46,7 +46,7 @@ Chaque commit sur `main`, y compris depuis l'administration, republie le site en
 Sveltia CMS : un formulaire pour ajouter ou modifier un glacier et sa photo, depuis le téléphone ou l'ordinateur.
 Chaque enregistrement crée un commit dans le dépôt.
 
-1. Dans `public/admin/config.yml`, remplacer `PROPRIETAIRE/cornet-de-route` par le vrai compte GitHub.
+1. Le dépôt est déclaré dans `public/admin/config.yml` (`skielbik/cornet-de-route`).
 2. Sur GitHub : Settings › Developer settings › Fine-grained tokens › un jeton limité au seul dépôt `cornet-de-route`, permission *Contents : Read and write*.
 3. Sur `https://cornetderoute.com/admin/`, choisir la connexion par jeton et coller ce jeton.
 

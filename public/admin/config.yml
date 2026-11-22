@@ -3,7 +3,7 @@
 
 backend:
   name: github
-  repo: PROPRIETAIRE/cornet-de-route   # à remplacer par le compte GitHub du site
+  repo: skielbik/cornet-de-route
   branch: main
   commit_messages:
     create: "Ajout de la fiche {{slug}}"
