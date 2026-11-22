@@ -32,12 +32,15 @@ Une fiche sans distinction ou avec `"publie": false` n'est pas publiée.
 
 Le préfixe `/fr/` laisse la place à `/en/` pour la version anglaise.
 
-## Mise en ligne sur Cloudflare Pages
+## Mise en ligne sur Cloudflare
 
-1. Dépôt GitHub : `skielbik/cornet-de-route` (privé).
-2. Cloudflare › Workers & Pages › Créer › Pages › Connecter le dépôt.
-3. Réglages de build : commande `node src/build.mjs`, dossier de sortie `dist`, variable `NODE_VERSION` = `22`.
-4. Domaines personnalisés : ajouter `cornetderoute.com` (et `www`). Pour `cornetderoute.fr`, une règle de redirection Cloudflare vers `https://cornetderoute.com` (le fichier `_redirects` ne gère pas les domaines).
+Le site est un Worker Cloudflare sans script, qui sert le dossier `dist/` (réglages dans `wrangler.jsonc`).
+
+- Dépôt GitHub : `skielbik/cornet-de-route` (privé), branche `main`.
+- Commande de build : `node src/build.mjs`. Variable `NODE_VERSION` = `22`.
+- Adresse de test : `https://cornet-de-route.cornetderoute.workers.dev`.
+- `version.txt` donne la version en ligne : utile pour vérifier qu'une publication est passée.
+- Domaine : `cornetderoute.com` en domaine personnalisé du Worker ; `cornetderoute.fr` redirigé vers lui par une règle de redirection Cloudflare.
 
 Chaque commit sur `main`, y compris depuis l'administration, republie le site en une à deux minutes.
 

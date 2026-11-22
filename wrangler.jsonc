@@ -1,0 +1,11 @@
+// Déploiement sur Cloudflare Workers (ressources statiques, sans script).
+// Cloudflare lance « node src/build.mjs » puis publie le dossier dist/.
+{
+  "name": "cornet-de-route",
+  "compatibility_date": "2026-11-22",
+  "assets": {
+    "directory": "./dist",
+    "not_found_handling": "404-page",
+    "html_handling": "auto-trailing-slash"
+  }
+}
