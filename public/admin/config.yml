@@ -1,0 +1,114 @@
+# Espace d'administration de Cornet de route (Sveltia CMS).
+# Connexion : bouton « Se connecter avec un jeton » et un jeton GitHub à accès limité au dépôt (voir README).
+
+backend:
+  name: github
+  repo: PROPRIETAIRE/cornet-de-route   # à remplacer par le compte GitHub du site
+  branch: main
+  commit_messages:
+    create: "Ajout de la fiche {{slug}}"
+    update: "Mise à jour de la fiche {{slug}}"
+    delete: "Suppression de la fiche {{slug}}"
+    uploadMedia: "Ajout de la photo {{path}}"
+
+site_url: https://cornetderoute.com/fr/
+logo_url: /icons/icon-192.png
+
+media_folder: public/images/glaciers
+public_folder: /images/glaciers
+
+# Les photos sont réduites et converties avant l'envoi, depuis le téléphone comme depuis l'ordinateur.
+media_libraries:
+  default:
+    config:
+      transformations:
+        raster_image:
+          format: webp
+          quality: 82
+          width: 1200
+          height: 1500
+
+slug:
+  encoding: ascii
+  clean_accents: true
+  sanitize_replacement: "-"
+
+collections:
+  - name: glaciers
+    label: Glaciers
+    label_singular: Glacier
+    description: "Une fiche par glacier distingué. Décochez « Publié » pour retirer une fiche du site sans la supprimer."
+    folder: content/glaciers
+    format: json
+    extension: json
+    create: true
+    delete: true
+    identifier_field: nom
+    slug: "{{nom}}"
+    summary: "{{nom}} · {{ville}} · {{distinction}} boule(s)"
+    sortable_fields: [nom, ville, pays, date_publication]
+    fields:
+      - { name: publie, label: "Publié sur le site", widget: boolean, default: true }
+      - { name: nom, label: "Nom du glacier", widget: string }
+      - { name: pays, label: "Pays", widget: string, hint: "En français, avec majuscule et accents : France, Italie, États-Unis." }
+      - { name: ville, label: "Ville", widget: string, hint: "Toujours écrite de la même façon : c'est elle qui regroupe les fiches." }
+      - name: distinction
+        label: "Distinction"
+        widget: select
+        options:
+          - { label: "Une boule : une très bonne adresse", value: "1" }
+          - { label: "Deux boules : mérite qu'on fasse un crochet", value: "2" }
+          - { label: "Trois boules : une glace d'exception", value: "3" }
+      - name: prix
+        label: "Prix"
+        widget: select
+        hint: "Par rapport aux prix de la ville."
+        options: ["€", "€€", "€€€"]
+      - { name: parfum, label: "Le parfum à ne pas manquer", widget: string }
+      - name: notes
+        label: "Notes sur 5"
+        widget: object
+        fields:
+          - { name: gout, label: "Goût", widget: number, value_type: int, min: 1, max: 5 }
+          - { name: texture, label: "Texture", widget: number, value_type: int, min: 1, max: 5 }
+          - { name: ingredients, label: "Ingrédients", widget: number, value_type: int, min: 1, max: 5 }
+          - { name: parfums, label: "Parfums (choix et originalité)", widget: number, value_type: int, min: 1, max: 5 }
+      - { name: recit, label: "Le récit", widget: text, hint: "Au vouvoiement. La touche d'humour, s'il y en a une, à la fin." }
+      - name: analyse
+        label: "L'analyse"
+        widget: object
+        fields:
+          - { name: gout, label: "Goût", widget: text }
+          - { name: texture, label: "Texture", widget: text }
+          - { name: ingredients, label: "Ingrédients", widget: text }
+          - { name: parfums, label: "Parfums", widget: text }
+      - { name: bemol, label: "Le bémol", widget: text, hint: "Une phrase, factuelle et constructive." }
+      - { name: verdict, label: "Le verdict", widget: text, hint: "À la première personne. Explique l'écart éventuel entre les notes et la distinction." }
+      - name: adresses
+        label: "Adresses"
+        label_singular: "Adresse"
+        widget: list
+        min: 1
+        fields:
+          - { name: nom, label: "Nom de la boutique", widget: string, required: false, hint: "Seulement s'il y a plusieurs adresses (ex. : Rue des Martyrs)." }
+          - { name: adresse, label: "Adresse complète", widget: string, hint: "Numéro, rue, code postal et ville." }
+          - { name: quartier, label: "Quartier", widget: string, required: false, hint: "Ex. : Paris 9e, Trastevere." }
+          - { name: lat, label: "Latitude", widget: number, value_type: float, hint: "Dans Google Maps, appui long sur le lieu : la première valeur (ex. 48.8787)." }
+          - { name: lng, label: "Longitude", widget: number, value_type: float, hint: "La seconde valeur (ex. 2.3396)." }
+      - name: options
+        label: "Options alimentaires"
+        widget: object
+        fields:
+          - { name: vegan, label: "Vegan", widget: select, options: ["Oui", "Non"], required: false }
+          - { name: sans_lactose, label: "Sans lactose", widget: select, options: ["Oui", "Non"], required: false }
+          - { name: cornet_sans_gluten, label: "Cornet sans gluten", widget: select, options: ["Oui", "Non"], required: false }
+      - name: liens
+        label: "Liens"
+        widget: object
+        fields:
+          - { name: site, label: "Site web", widget: string, required: false }
+          - { name: instagram, label: "Instagram", widget: string, required: false }
+          - { name: google_maps, label: "Fiche Google Maps", widget: string, required: false }
+      - { name: photo, label: "Photo : le cornet tendu", widget: image, required: false, hint: "Format vertical 4:5, cornet centré, bras tendu." }
+      - { name: date_visite, label: "Date de visite", widget: datetime, format: "YYYY-MM-DD", date_format: "DD/MM/YYYY", time_format: false, required: false }
+      - { name: date_publication, label: "Date de publication", widget: datetime, format: "YYYY-MM-DD", date_format: "DD/MM/YYYY", time_format: false }

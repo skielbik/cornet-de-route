@@ -1,0 +1,18 @@
+{
+  "nom": "Cornet de route",
+  "promesse": "Un seul palais, partout dans le monde.",
+  "surtitre": "Guide des glaciers d'exception",
+  "url": "https://cornetderoute.com",
+  "langue": "fr",
+  "seuilPageVille": 3,
+  "instagram": "https://www.instagram.com/cornetderoute/",
+  "carte": {
+    "tuiles": "https://tile.openstreetmap.org/{z}/{x}/{y}.png",
+    "attribution": "© les contributeurs d'OpenStreetMap",
+    "note": "Fond de carte provisoire pour la version de test : le fournisseur définitif reste à choisir."
+  },
+  "umami": {
+    "script": "",
+    "siteId": ""
+  }
+}

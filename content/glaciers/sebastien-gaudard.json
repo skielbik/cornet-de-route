@@ -1,0 +1,60 @@
+{
+  "nom": "Sébastien Gaudard",
+  "pays": "France",
+  "ville": "Paris",
+  "distinction": 2,
+  "prix": "€€€",
+  "parfum": "Vanille",
+  "notes": {
+    "gout": 5,
+    "texture": 5,
+    "ingredients": 5,
+    "parfums": 3
+  },
+  "recit": "Poussez la porte : le temps ralentit. Un décor rétro, une douceur d'antan, le réconfort d'un goûter d'enfance. Commandez la vanille. Ne discutez pas.",
+  "analyse": {
+    "gout": "Une vanille de Madagascar d'une rare justesse. Le sucre l'accompagne sans jamais la couvrir.",
+    "texture": "Dense et soyeuse. La fonte a exactement la longueur qu'on espère de toute glace, et qu'on obtient rarement.",
+    "ingredients": "Aucune concession sur les matières. L'exigence se lit à chaque cuillerée.",
+    "parfums": "Une carte très bonne, sans surprise."
+  },
+  "bemol": "Hors de la vanille, les parfums sont très bons, jamais hors du commun.",
+  "verdict": "Je lui accorde deux boules. La vanille, à elle seule, en mériterait trois. Mais je juge une maison, pas un parfum : la carte n'est pas encore à sa hauteur.",
+  "adresses": [
+    {
+      "nom": "Rue des Martyrs",
+      "adresse": "22 rue des Martyrs, 75009 Paris",
+      "quartier": "Paris 9e",
+      "lat": 48.8787,
+      "lng": 2.3396
+    },
+    {
+      "nom": "Faubourg-Poissonnière",
+      "adresse": "59 rue du Faubourg-Poissonnière, 75009 Paris",
+      "quartier": "Paris 9e",
+      "lat": 48.8763,
+      "lng": 2.3478
+    },
+    {
+      "nom": "Pâtisserie des Tuileries",
+      "adresse": "Rue des Pyramides, 75001 Paris",
+      "quartier": "Paris 1er",
+      "lat": 48.8636,
+      "lng": 2.3329
+    }
+  ],
+  "options": {
+    "vegan": "",
+    "sans_lactose": "",
+    "cornet_sans_gluten": ""
+  },
+  "liens": {
+    "site": "https://sebastiengaudard.com/",
+    "instagram": "",
+    "google_maps": ""
+  },
+  "date_visite": "",
+  "date_publication": "2026-11-22",
+  "photo": "",
+  "publie": true
+}

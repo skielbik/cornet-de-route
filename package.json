@@ -1,0 +1,12 @@
+{
+  "name": "cornet-de-route",
+  "version": "0.1.0",
+  "private": true,
+  "description": "Cornet de route, le guide des glaciers d'exception.",
+  "type": "module",
+  "engines": { "node": ">=20" },
+  "scripts": {
+    "build": "node src/build.mjs",
+    "apercu": "node src/build.mjs --apercu"
+  }
+}
