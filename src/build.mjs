@@ -181,7 +181,8 @@ const donnees = {
 writeFileSync(join(SORTIE, 'fr', 'donnees.json'), JSON.stringify(donnees));
 
 // Racine : renvoie vers /fr/ (doublé d'une redirection côté hébergeur en production).
-writeFileSync(join(SORTIE, 'index.html'), `<!DOCTYPE html><html lang="fr"><head><meta charset="utf-8"><title>${config.nom}</title><meta http-equiv="refresh" content="0; url=${apercu ? './fr/index.html' : '/fr/'}"><link rel="canonical" href="${config.url}/fr/"></head><body><a href="${apercu ? './fr/index.html' : '/fr/'}">${config.nom}</a></body></html>`);
+if (apercu) writeFileSync(join(SORTIE, 'index.html'), relativiser(P.accueil(site), 'index.html'));
+else writeFileSync(join(SORTIE, 'index.html'), `<!DOCTYPE html><html lang="fr"><head><meta charset="utf-8"><title>${config.nom}</title><meta http-equiv="refresh" content="0; url=${apercu ? './fr/index.html' : '/fr/'}"><link rel="canonical" href="${config.url}/fr/"></head><body><a href="${apercu ? './fr/index.html' : '/fr/'}">${config.nom}</a></body></html>`);
 
 if (!apercu) {
   const aujourdhui = new Date().toISOString().slice(0, 10);
