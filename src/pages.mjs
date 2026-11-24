@@ -53,7 +53,7 @@ export function layout(site, page) {
   const image = config.url + (page.image || '/icons/og.png');
   const jsonld = (page.jsonld || []).map((d) => `<script type="application/ld+json">${JSON.stringify(d).replace(/</g, '\\u003c')}</script>`).join('\n');
   const umami = config.umami?.script && config.umami?.siteId && site.mode === 'production'
-    ? `<script defer src="${esc(config.umami.script)}" data-website-id="${esc(config.umami.siteId)}"></script>` : '';
+    ? `<script defer src="${esc(config.umami.script)}" data-website-id="${esc(config.umami.siteId)}" data-domains="${esc(new URL(config.url).hostname)}"></script>` : '';
   const enTete = page.enTeteFiche
     ? `<header class="entete entete-fiche">
   <a class="icone-bouton" href="${page.enTeteFiche.retour}" aria-label="Retour à ${esc(page.enTeteFiche.retourLabel)}">${ICONES.retour}</a>
@@ -613,20 +613,23 @@ export function mentions(site) {
   <h1>Mentions légales et confidentialité</h1>
 </div></section>
 <div class="etroit texte-long">
-  <p class="encart brouillon">Brouillon à compléter avant l'ouverture du site : les passages entre crochets restent à remplir.</p>
   <h2>Éditeur</h2>
-  <p>Cornet de route est édité par [nom de l'éditeur], [adresse ou mention de l'hébergeur pour un éditeur non professionnel]. Contact : [adresse e-mail dédiée].</p>
+  <p>Cornet de route est un site personnel, édité par un particulier à titre non professionnel. Comme la loi pour la confiance dans l'économie numérique le permet (article 1-1, II), son éditeur ne rend pas publique son identité : il l'a communiquée à l'hébergeur du site, qui ne peut la divulguer que sur réquisition de l'autorité judiciaire.</p>
+  <p>Contact : par message sur Instagram, <a href="${esc(site.config.instagram)}" rel="noopener">@cornetderoute</a>.</p>
   <h2>Hébergement</h2>
   <p>Le site est hébergé par Cloudflare, Inc., 101 Townsend Street, San Francisco, CA 94107, États-Unis.</p>
-  <h2>Indépendance</h2>
-  <p>[À confirmer : qui paie les glaces goûtées, et l'engagement qu'aucun glacier ne paie pour figurer au guide.]</p>
+  <h2>Méthode</h2>
+  <p>Les distinctions sont attribuées par le seul dégustateur, selon le barème publié sur la page <a href="/fr/methode/">La méthode</a>.</p>
+  <h2>Propriété des contenus</h2>
+  <p>Les textes et les photographies de Cornet de route appartiennent à leur auteur. Leur reproduction demande son accord.</p>
   <h2>Vos données</h2>
   <ul>
-    <li><strong>Mesure d'audience.</strong> Le site compte ses visites avec un outil qui ne dépose pas de cookie et ne permet pas de vous identifier. [Nom de l'outil et lieu d'hébergement à préciser à son installation.]</li>
+    <li><strong>Mesure d'audience.</strong> Le site compte ses visites avec Umami, un outil qui ne dépose aucun cookie et ne permet pas de vous identifier. Il est installé sur des serveurs loués par le site : Vercel pour l'application, Supabase pour la base de données.</li>
     <li><strong>Autour de moi.</strong> Votre position n'est demandée que si vous touchez le bouton. Elle sert au calcul des distances dans votre téléphone et n'est ni envoyée ni enregistrée.</li>
-    <li><strong>Ma liste.</strong> Elle est enregistrée dans votre navigateur, sur votre appareil. Nous n'y avons pas accès.</li>
+    <li><strong>Ma liste.</strong> Elle est enregistrée dans votre navigateur, sur votre appareil. Personne d'autre n'y a accès.</li>
     <li><strong>Carte.</strong> Le fond de carte est fourni par OpenFreeMap, à partir des données OpenStreetMap. Ce service ne dépose pas de cookie mais reçoit, comme tout serveur, votre adresse IP. Les polices de caractères sont servies par le site lui-même.</li>
   </ul>
+  <p>Le site ne dépose aucun cookie. Pour toute question sur vos données, écrivez-nous sur Instagram.</p>
 </div>`;
   return layout(site, {
     titre: 'Mentions légales et confidentialité',
@@ -647,4 +650,41 @@ export function page404(site) {
 </div></section>
 <div class="etroit section-simple"><a class="bouton contour" href="/fr/">Revenir à l'accueil</a></div>`;
   return layout(site, { titre: 'Page introuvable', chemin: '/404.html', description: 'Page introuvable.', contenu, noindex: true });
+}
+
+// ---------- Tableau de bord (espace d'administration) ----------
+
+export function tableauDeBord(site) {
+  const { config } = site;
+  const umami = config.umami?.tableau || (config.umami?.script ? new URL(config.umami.script).origin : '');
+  const lignes = [
+    ['Visiteurs uniques et pages vues', 'Umami, vue d\'ensemble du site'],
+    ['Sources de trafic (Google, Instagram, direct, autres sites)', 'Umami, bloc des sources'],
+    ['Pays des visiteurs', 'Umami, bloc des pays'],
+    ['Fiches et villes les plus consultées', 'Umami, bloc des pages'],
+    ['Destinations cherchées dans « Où partez-vous ? »', 'Umami, événement « recherche », propriété « destination »'],
+    ['Utilisations de « Autour de moi »', 'Umami, événement « autour-de-moi »'],
+    ['Ajouts à « Ma liste »', 'Umami, événement « ajout-liste »'],
+    ["Installations de l'application", 'Umami, événement « installation-app »'],
+    ['Apparitions, clics et position dans Google', 'Search Console, rapport Performances'],
+  ];
+  const contenu = `
+<section class="tete-page bande-vert"><div class="etroit">
+  <h1>Tableau de bord</h1>
+  <p>L'audience du site et sa visibilité dans Google, à consulter quand vous le souhaitez.</p>
+</div></section>
+<div class="etroit section-simple">
+  <div class="actions">
+    ${umami ? `<a class="bouton plein" href="${esc(umami)}" rel="noopener">Ouvrir Umami</a>` : '<p class="encart">Umami n\'est pas encore branché.</p>'}
+    <a class="bouton contour" href="${esc(config.searchConsole)}" rel="noopener">Ouvrir la Search Console</a>
+  </div>
+  <h2>Où lire chaque indicateur</h2>
+  <table class="indicateurs">
+    <thead><tr><th>Indicateur</th><th>Où le lire</th></tr></thead>
+    <tbody>${lignes.map(([a, b]) => `<tr><td>${esc(a)}</td><td>${esc(b)}</td></tr>`).join('')}</tbody>
+  </table>
+  <p class="petit doux">Les clics sur « Y aller » sont aussi enregistrés (événement « y-aller »), pour pouvoir répondre un jour à un partenaire.</p>
+  <p><a href="/admin/">Retour à l'administration des fiches</a></p>
+</div>`;
+  return layout(site, { titre: 'Tableau de bord', chemin: '/admin/tableau-de-bord/', description: 'Tableau de bord de Cornet de route.', contenu, noindex: true });
 }

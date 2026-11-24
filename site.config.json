@@ -13,7 +13,9 @@
   },
   "umami": {
     "script": "",
-    "siteId": ""
+    "siteId": "",
+    "tableau": ""
   },
-  "ouvertAuxMoteurs": false
+  "ouvertAuxMoteurs": false,
+  "searchConsole": "https://search.google.com/search-console?resource_id=sc-domain:cornetderoute.com"
 }

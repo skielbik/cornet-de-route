@@ -68,5 +68,5 @@ Le jour du lancement, passer la valeur à `true`, puis déclarer `sitemap.xml` d
 
 ## Reste à faire
 
-- Mentions légales : compléter les passages entre crochets.
+- Mentions légales : l'éditeur reste anonyme (LCEN, art. 1-1, II) ; son identité doit être renseignée dans le compte Cloudflare. À revoir dès que le site génère des revenus (éditeur professionnel).
 - Sébastien Gaudard : date de visite, options alimentaires, numéro rue des Pyramides, coordonnées à vérifier.

@@ -131,7 +131,15 @@ const pagesEcrites = [];
 const page404 = (c) => c === '/404.html';
 const pagesPrivees = ['/fr/recherche/', '/fr/autour-de-moi/', '/fr/ma-liste/', '/fr/mentions-legales/'];
 
-function ecrire(chemin, html, { sitemap = true } = {}) {
+// Typographie française : espace insécable avant : ; ! ? » et après «, hors scripts et balises.
+function typographie(html) {
+  return html.split(/(<script[\s\S]*?<\/script>|<style[\s\S]*?<\/style>)/).map((bloc, i) => (i % 2 ? bloc : bloc.replace(/>([^<]+)</g, (_, t) => `>${t
+    .replace(/« /g, '«\u00a0').replace(/ »/g, '\u00a0»')
+    .replace(/ ([:;!?])(?=\s|$|<)/g, '\u00a0$1')}<`))).join('');
+}
+
+function ecrire(chemin, html0, { sitemap = true } = {}) {
+  const html = typographie(html0);
   const fichier = chemin.endsWith('/') ? `${chemin}index.html` : chemin;
   const cible = join(SORTIE, fichier);
   mkdirSync(dirname(cible), { recursive: true });
@@ -166,6 +174,7 @@ ecrire('/fr/autour-de-moi/', P.autourDeMoi(site));
 ecrire('/fr/ma-liste/', P.maListe(site));
 ecrire('/fr/mentions-legales/', P.mentions(site));
 ecrire('/404.html', P.page404(site), { sitemap: false });
+if (!apercu) ecrire('/admin/tableau-de-bord/', P.tableauDeBord(site), { sitemap: false });
 
 // Données lues par la recherche, Autour de moi, Ma liste et la carte.
 const donnees = {

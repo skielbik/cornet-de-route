@@ -249,6 +249,10 @@ button { font: inherit; color: inherit; }
 .texte-long ul { padding-left: 20px; display: grid; gap: 8px; }
 .brouillon { border-color: var(--caramel); }
 
+.indicateurs { width: 100%; border-collapse: collapse; font-size: 14px; }
+.indicateurs th, .indicateurs td { text-align: left; vertical-align: top; padding: 10px 8px 10px 0; border-bottom: 1px solid var(--filet); }
+.indicateurs th { font-size: 12px; text-transform: uppercase; letter-spacing: .12em; }
+
 /* ---------- Cartes géographiques ---------- */
 
 .carte-mini { position: relative; height: 220px; border-radius: 8px; overflow: hidden; background: var(--vert); margin-top: 16px; isolation: isolate; }
