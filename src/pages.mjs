@@ -93,9 +93,8 @@ ${site.mode === 'production' && !page.noindex ? `<link rel="canonical" href="${e
 <link rel="manifest" href="/manifest.webmanifest">
 <link rel="icon" href="/icons/favicon.svg" type="image/svg+xml">
 <link rel="apple-touch-icon" href="/icons/apple-touch-icon.png">
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Archivo:wght@400;600&family=Bodoni+Moda:ital,opsz,wght@0,6..96,600;1,6..96,400&display=swap">
+<link rel="preload" href="/assets/fonts/archivo-400-600.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="preload" href="/assets/fonts/bodoni-moda-600.woff2" as="font" type="font/woff2" crossorigin>
 <link rel="stylesheet" href="/assets/site.css?v=${site.version}">
 ${jsonld}
 ${umami}
@@ -627,7 +626,7 @@ export function mentions(site) {
     <li><strong>Mesure d'audience.</strong> Le site compte ses visites avec un outil qui ne dépose pas de cookie et ne permet pas de vous identifier. [Nom de l'outil et lieu d'hébergement à préciser à son installation.]</li>
     <li><strong>Autour de moi.</strong> Votre position n'est demandée que si vous touchez le bouton. Elle sert au calcul des distances dans votre téléphone et n'est ni envoyée ni enregistrée.</li>
     <li><strong>Ma liste.</strong> Elle est enregistrée dans votre navigateur, sur votre appareil. Nous n'y avons pas accès.</li>
-    <li><strong>Carte et polices.</strong> La carte et les polices de caractères sont chargées depuis des services tiers, qui reçoivent votre adresse IP. [Fournisseur de la carte à préciser.]</li>
+    <li><strong>Carte.</strong> Le fond de carte est chargé depuis un service tiers, qui reçoit votre adresse IP. [Fournisseur de la carte à préciser.] Les polices de caractères sont servies par le site lui-même.</li>
   </ul>
 </div>`;
   return layout(site, {

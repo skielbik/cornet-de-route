@@ -69,6 +69,5 @@ Le jour du lancement, passer la valeur à `true`, puis déclarer `sitemap.xml` d
 ## Reste à faire
 
 - Fond de carte définitif : `carte.tuiles` dans `site.config.json` (OpenStreetMap provisoire, réservé à un usage léger).
-- Héberger les polices sur le site plutôt que chez Google Fonts.
 - Mentions légales : compléter les passages entre crochets.
 - Sébastien Gaudard : date de visite, options alimentaires, numéro rue des Pyramides, coordonnées à vérifier.

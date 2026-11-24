@@ -3,6 +3,12 @@
    Bodoni Moda pour les titres (jamais sous 20 px), Archivo pour le texte.
    Pensé d'abord pour le téléphone, devant le glacier. */
 
+/* Polices servies par le site (licence SIL Open Font License, voir fonts/OFL-*.txt),
+   réduites aux caractères latins. */
+@font-face { font-family: "Bodoni Moda"; src: url("fonts/bodoni-moda-600.woff2") format("woff2"); font-weight: 600; font-style: normal; font-display: swap; }
+@font-face { font-family: "Bodoni Moda"; src: url("fonts/bodoni-moda-italique-400.woff2") format("woff2"); font-weight: 400; font-style: italic; font-display: swap; }
+@font-face { font-family: "Archivo"; src: url("fonts/archivo-400-600.woff2") format("woff2"); font-weight: 400 600; font-style: normal; font-display: swap; }
+
 :root {
   --vert: #A3D5C5;
   --chocolat: #3B2418;
