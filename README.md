@@ -9,7 +9,7 @@ Site statique sur mesure, généré par un petit programme Node **sans aucune d�
 | --- | --- |
 | `content/glaciers/*.json` | Une fiche par glacier. Le nom du fichier donne l'adresse de la page. |
 | `content/pays/<pays>.json`, `content/villes/<pays>-<ville>.json` | Facultatif : `{ "intro": "…" }` pour un texte d'introduction. |
-| `site.config.json` | Nom, adresse du site, seuil de la page ville (3), fond de carte, mesure d'audience. |
+| `site.config.json` | Nom, adresse du site, seuil de la page ville (3), fond de carte (OpenFreeMap + MapLibre 5.23.0), mesure d'audience. |
 | `src/` | Le générateur (`build.mjs`), les modèles de pages (`pages.mjs`) et les composants (`lib.mjs`). |
 | `public/` | Copié tel quel : style, scripts, icônes, application installable, espace d'administration. |
 | `scripts/icones.mjs` | Régénère les icônes et l'image de partage (nécessite `sharp`). |
@@ -68,6 +68,5 @@ Le jour du lancement, passer la valeur à `true`, puis déclarer `sitemap.xml` d
 
 ## Reste à faire
 
-- Fond de carte définitif : `carte.tuiles` dans `site.config.json` (OpenStreetMap provisoire, réservé à un usage léger).
 - Mentions légales : compléter les passages entre crochets.
 - Sébastien Gaudard : date de visite, options alimentaires, numéro rue des Pyramides, coordonnées à vérifier.

@@ -123,8 +123,7 @@ ${page.contenu}
 <nav class="nav-bas" aria-label="Navigation principale">
 ${NAV.map((n) => `  <a href="${n.href}"${page.actif === n.cle ? ' aria-current="page"' : ''}>${n.icone}<span>${n.label}</span></a>`).join('\n')}
 </nav>
-${(page.scripts || []).includes('carte') ? `<script>window.CARTE=${JSON.stringify({ tuiles: config.carte.tuiles, attribution: config.carte.attribution }).replace(/</g, '\\u003c')}</script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/leaflet.min.js" defer></script>` : ''}
+${(page.scripts || []).includes('carte') ? `<script>window.CARTE=${JSON.stringify({ style: config.carte.style, bibliotheque: config.carte.bibliotheque }).replace(/</g, '\\u003c')}</script>` : ''}
 <script src="/assets/site.js?v=${site.version}" defer></script>
 </body>
 </html>
@@ -503,7 +502,7 @@ export function carte(site) {
   <div class="carte-fond" aria-hidden="true"></div>
   <span class="pastille">${pluriel(site.glaciers.length, 'glacier', 'glaciers')} · ${pluriel(site.pays.length, 'pays', 'pays')}</span>
 </div>
-<p class="etroit petit doux note-carte">${esc(site.config.carte.attribution)}. Touchez un point pour ouvrir la fiche.</p>`;
+<p class="etroit petit doux note-carte">Touchez un cornet pour ouvrir la fiche.</p>`;
   return layout(site, {
     titre: 'La carte des glaciers',
     chemin: '/fr/carte/',
@@ -626,7 +625,7 @@ export function mentions(site) {
     <li><strong>Mesure d'audience.</strong> Le site compte ses visites avec un outil qui ne dépose pas de cookie et ne permet pas de vous identifier. [Nom de l'outil et lieu d'hébergement à préciser à son installation.]</li>
     <li><strong>Autour de moi.</strong> Votre position n'est demandée que si vous touchez le bouton. Elle sert au calcul des distances dans votre téléphone et n'est ni envoyée ni enregistrée.</li>
     <li><strong>Ma liste.</strong> Elle est enregistrée dans votre navigateur, sur votre appareil. Nous n'y avons pas accès.</li>
-    <li><strong>Carte.</strong> Le fond de carte est chargé depuis un service tiers, qui reçoit votre adresse IP. [Fournisseur de la carte à préciser.] Les polices de caractères sont servies par le site lui-même.</li>
+    <li><strong>Carte.</strong> Le fond de carte est fourni par OpenFreeMap, à partir des données OpenStreetMap. Ce service ne dépose pas de cookie mais reçoit, comme tout serveur, votre adresse IP. Les polices de caractères sont servies par le site lui-même.</li>
   </ul>
 </div>`;
   return layout(site, {

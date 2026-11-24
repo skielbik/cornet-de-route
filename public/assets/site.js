@@ -244,37 +244,116 @@
   }
 
   // ---------- Cartes ----------
+  // Fond OpenFreeMap dessiné par MapLibre, chargé seulement quand une carte devient visible,
+  // et recoloré aux couleurs de la charte.
 
-  const COULEUR_FOND = '#A3D5C5';
-  function marqueur(p) {
+  const TEINTES = {
+    fond: '#F6EFE2', eau: '#A3D5C5', verdure: '#DFE9D8', glace: '#FFFFFF', bati: '#ECE2D0', sol: '#F1E8D9',
+    route: '#FFFFFF', bordure: '#E3D6C2', rail: '#D2C3AD', limite: '#C9B79F', texte: '#6B5446', ville: '#3B2418', texteEau: '#3F7D6A',
+  };
+
+  function teinter(style, urlStyle) {
+    const absolu = (x) => (typeof x === 'string' && !/^[a-z]+:/i.test(x) ? new URL(x, urlStyle).href : x);
+    if (style.sprite) style.sprite = Array.isArray(style.sprite) ? style.sprite.map((s) => ({ ...s, url: absolu(s.url) })) : absolu(style.sprite);
+    if (style.glyphs) style.glyphs = absolu(style.glyphs);
+    Object.values(style.sources || {}).forEach((src) => { if (src.url) src.url = absolu(src.url); });
+    (style.layers || []).forEach((l) => {
+      const p = l.paint || (l.paint = {});
+      const couche = l['source-layer'] || '';
+      const id = l.id || '';
+      if (l.type === 'background') p['background-color'] = TEINTES.fond;
+      else if (l.type === 'fill') {
+        delete p['fill-pattern'];
+        delete p['fill-outline-color'];
+        if (couche === 'water') p['fill-color'] = TEINTES.eau;
+        else if (/ice|glacier/.test(id)) p['fill-color'] = TEINTES.glace;
+        else if (couche === 'park' || /wood|grass|park|forest|scrub/.test(id)) p['fill-color'] = TEINTES.verdure;
+        else if (couche === 'building') p['fill-color'] = TEINTES.bati;
+        else p['fill-color'] = TEINTES.sol;
+      } else if (l.type === 'line') {
+        if (couche === 'waterway') p['line-color'] = TEINTES.eau;
+        else if (couche === 'boundary') p['line-color'] = TEINTES.limite;
+        else if (/rail/.test(id)) p['line-color'] = TEINTES.rail;
+        else if (couche === 'transportation' || couche === 'aeroway') p['line-color'] = /casing/.test(id) ? TEINTES.bordure : TEINTES.route;
+      } else if (l.type === 'symbol' && l.layout && l.layout['text-field']) {
+        const eau = /water|ocean|sea|lake|river/.test(id) || couche === 'water_name' || couche === 'waterway';
+        const grandLieu = /city|capital|country|continent/.test(id);
+        p['text-color'] = eau ? TEINTES.texteEau : (grandLieu ? TEINTES.ville : TEINTES.texte);
+        p['text-halo-color'] = TEINTES.fond;
+        p['text-halo-width'] = 1.2;
+      }
+    });
+    return style;
+  }
+
+  let promesseBibliotheque;
+  const bibliotheque = () => {
+    promesseBibliotheque = promesseBibliotheque || new Promise((ok, ko) => {
+      if (window.maplibregl) { ok(window.maplibregl); return; }
+      const s = document.createElement('script');
+      s.src = u((window.CARTE || {}).bibliotheque);
+      s.onload = () => (window.maplibregl ? ok(window.maplibregl) : ko(new Error('carte')));
+      s.onerror = ko;
+      document.head.appendChild(s);
+    });
+    return promesseBibliotheque;
+  };
+  let promesseStyle;
+  const styleCarte = () => {
+    const url = (window.CARTE || {}).style;
+    promesseStyle = promesseStyle || fetch(url).then((r) => r.json()).then((s) => teinter(s, url));
+    return promesseStyle;
+  };
+
+  function marqueurElement(p) {
     const { svg, L, H } = cornet(p.d, 12, '#FFFFFF');
-    return window.L.divIcon({ className: 'marqueur', html: svg, iconSize: [L, H], iconAnchor: [L / 2, H], popupAnchor: [0, -H] });
+    const el = document.createElement('div');
+    el.className = 'marqueur';
+    el.innerHTML = svg;
+    el.setAttribute('aria-label', `${p.nom}, ${LABELS[p.d]}`);
+    return { el, L, H };
   }
 
-  function creerCarte(el, pts, { interactive, centre } = {}) {
-    if (!window.L) { dessinerSansFond(el, pts); return null; }
-    const conf = window.CARTE || {};
-    const carte = window.L.map(el, {
-      zoomControl: interactive, dragging: interactive, scrollWheelZoom: interactive, touchZoom: interactive,
-      doubleClickZoom: interactive, boxZoom: interactive, keyboard: interactive, attributionControl: true, zoomSnap: 0.5,
-    });
-    carte.attributionControl.setPrefix(false);
-    if (conf.tuiles) window.L.tileLayer(conf.tuiles, { attribution: conf.attribution, maxZoom: 19, className: 'tuiles' }).addTo(carte);
-    const couche = window.L.featureGroup();
-    pts.forEach((p) => {
-      const m = window.L.marker([p.lat, p.lng], { icon: marqueur(p), title: p.nom, keyboard: interactive });
-      if (interactive) m.bindPopup(`<a class="bulle" href="${esc(u(p.url))}"><span class="petit">${LABELS[p.d]}</span><strong>${esc(p.nom)}</strong><span class="petit doux">${esc(p.lieu ? `${p.lieu}, ` : '')}${esc(p.ville)}</span></a>`);
-      m.addTo(couche);
-    });
-    if (centre) window.L.circleMarker(centre, { radius: 8, color: '#FFFFFF', weight: 3, fillColor: '#3B2418', fillOpacity: 1 }).addTo(couche);
-    couche.addTo(carte);
-    if (pts.length + (centre ? 1 : 0) > 1) carte.fitBounds(couche.getBounds(), { padding: [32, 32], maxZoom: 15 });
-    else if (pts.length || centre) carte.setView(centre || [pts[0].lat, pts[0].lng], 14);
-    else carte.setView([30, 10], 2);
-    return { carte, couche };
+  async function creerCarte(el, pts, { interactive, centre } = {}) {
+    try {
+      const [ml, style] = await Promise.all([bibliotheque(), styleCarte()]);
+      const tous = [...pts.map((p) => [p.lng, p.lat]), ...(centre ? [[centre[1], centre[0]]] : [])];
+      const options = { container: el, style: structuredClone(style), interactive, attributionControl: false, dragRotate: false, pitchWithRotate: false };
+      if (tous.length > 1) {
+        const b = new ml.LngLatBounds();
+        tous.forEach((c) => b.extend(c));
+        Object.assign(options, { bounds: b, fitBoundsOptions: { padding: 40, maxZoom: 15 } });
+      } else if (tous.length === 1) Object.assign(options, { center: tous[0], zoom: 14 });
+      else Object.assign(options, { center: [10, 30], zoom: 1.2 });
+      const carte = new ml.Map(options);
+      carte.addControl(new ml.AttributionControl({ compact: false }), interactive ? 'bottom-right' : 'top-right');
+      if (interactive) {
+        carte.addControl(new ml.NavigationControl({ showCompass: false }), 'bottom-right');
+        if (carte.touchZoomRotate) carte.touchZoomRotate.disableRotation();
+      }
+      pts.forEach((p) => {
+        const { el: m, H } = marqueurElement(p);
+        const marqueur = new ml.Marker({ element: m, anchor: 'bottom' }).setLngLat([p.lng, p.lat]);
+        if (interactive) {
+          marqueur.setPopup(new ml.Popup({ offset: { bottom: [0, -H], 'bottom-left': [0, -H], 'bottom-right': [0, -H], top: [0, 0], 'top-left': [0, 0], 'top-right': [0, 0], left: [8, -H / 2], right: [-8, -H / 2] }, maxWidth: '260px' })
+            .setHTML(`<a class="bulle" href="${esc(u(p.url))}"><span class="petit">${LABELS[p.d]}</span><strong>${esc(p.nom)}</strong><span class="petit doux">${esc(p.lieu ? `${p.lieu}, ` : '')}${esc(p.ville)}</span></a>`));
+        }
+        marqueur.addTo(carte);
+      });
+      if (centre) {
+        const moi = document.createElement('div');
+        moi.className = 'moi';
+        moi.setAttribute('aria-label', 'Votre position');
+        new ml.Marker({ element: moi }).setLngLat([centre[1], centre[0]]).addTo(carte);
+      }
+      return { carte, ml };
+    } catch (e) {
+      dessinerSansFond(el, pts);
+      return null;
+    }
   }
 
-  // Si la bibliothèque de carte ne charge pas : les points sur l'aplat vert d'eau.
+  // Si la carte ne peut pas se charger : les cornets sur l'aplat vert d'eau.
   function dessinerSansFond(el, pts) {
     if (!pts.length) return;
     const lats = pts.map((p) => p.lat);
@@ -293,20 +372,33 @@
 
   const lirePoints = (el) => { try { return JSON.parse(el.dataset.points || '[]'); } catch (e) { return []; } };
 
-  document.querySelectorAll('[data-carte="mini"]').forEach((el) => creerCarte(el.querySelector('.carte-fond'), lirePoints(el), { interactive: false }));
+  const minis = document.querySelectorAll('[data-carte="mini"]');
+  if (minis.length) {
+    const lancer = (el) => creerCarte(el.querySelector('.carte-fond'), lirePoints(el), { interactive: false });
+    if ('IntersectionObserver' in window) {
+      const observateur = new IntersectionObserver((entrees) => entrees.forEach((en) => {
+        if (en.isIntersecting) { observateur.unobserve(en.target); lancer(en.target); }
+      }), { rootMargin: '300px' });
+      minis.forEach((el) => observateur.observe(el));
+    } else minis.forEach(lancer);
+  }
 
   const pleine = document.querySelector('[data-carte="pleine"]');
   if (pleine) {
     const pts = lirePoints(pleine);
-    const res = creerCarte(pleine.querySelector('.carte-fond'), pts, { interactive: true });
-    const viser = () => {
-      const h = decodeURIComponent(location.hash.slice(1));
-      if (!res || !h) return;
-      const cible = pts.filter((p) => p.p === h || `${p.p}-${p.v}` === h);
-      if (cible.length) res.carte.fitBounds(window.L.latLngBounds(cible.map((p) => [p.lat, p.lng])), { padding: [40, 40], maxZoom: 15 });
-    };
-    viser();
-    window.addEventListener('hashchange', viser);
+    creerCarte(pleine.querySelector('.carte-fond'), pts, { interactive: true }).then((res) => {
+      const viser = () => {
+        const h = decodeURIComponent(location.hash.slice(1));
+        if (!res || !h) return;
+        const cible = pts.filter((p) => p.p === h || `${p.p}-${p.v}` === h);
+        if (!cible.length) return;
+        const b = new res.ml.LngLatBounds();
+        cible.forEach((p) => b.extend([p.lng, p.lat]));
+        res.carte.fitBounds(b, { padding: 48, maxZoom: 15, duration: 0 });
+      };
+      if (res) res.carte.once('load', viser);
+      window.addEventListener('hashchange', viser);
+    });
   }
 
   // ---------- Autour de moi ----------
@@ -353,7 +445,7 @@
           carteAutour = null;
           fond.innerHTML = '';
           const pts = proximite.flatMap(({ g }) => g.adresses.map((a) => ({ ...a, nom: g.nom, url: g.url, d: g.d, ville: g.ville, lieu: a.nom })));
-          carteAutour = creerCarte(fond, pts, { interactive: true, centre: [ici.lat, ici.lng] });
+          carteAutour = await creerCarte(fond, pts, { interactive: true, centre: [ici.lat, ici.lng] });
         }
       }, (err) => {
         statut.textContent = err.code === 1

@@ -7,9 +7,9 @@
   "seuilPageVille": 3,
   "instagram": "https://www.instagram.com/cornetderoute/",
   "carte": {
-    "tuiles": "https://tile.openstreetmap.org/{z}/{x}/{y}.png",
-    "attribution": "© les contributeurs d'OpenStreetMap",
-    "note": "Fond de carte provisoire pour la version de test : le fournisseur définitif reste à choisir."
+    "style": "https://tiles.openfreemap.org/styles/positron",
+    "bibliotheque": "/assets/carte/maplibre-gl-5.23.0.js",
+    "note": "Fond OpenFreeMap (données OpenStreetMap) : gratuit, usage commercial autorisé, sans clé ni cookie. MapLibre GL JS 5.23.0 hébergé sur le site (licence BSD, assets/carte/). Recoloré aux couleurs de la charte dans assets/site.js."
   },
   "umami": {
     "script": "",
