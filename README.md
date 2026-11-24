@@ -61,6 +61,11 @@ Renseigner `umami.script` et `umami.siteId` dans `site.config.json` une fois Uma
 Événements déjà envoyés par le site : `recherche` (destination), `autour-de-moi`, `ajout-liste` (glacier),
 `installation-app`, `y-aller` (glacier, enregistré sans figurer au tableau de bord).
 
+## Avant le lancement
+
+`"ouvertAuxMoteurs": false` dans `site.config.json` garde tout le site hors de Google (balise noindex et robots.txt fermé).
+Le jour du lancement, passer la valeur à `true`, puis déclarer `sitemap.xml` dans la Search Console.
+
 ## Reste à faire
 
 - Fond de carte définitif : `carte.tuiles` dans `site.config.json` (OpenStreetMap provisoire, réservé à un usage léger).

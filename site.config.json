@@ -14,5 +14,6 @@
   "umami": {
     "script": "",
     "siteId": ""
-  }
+  },
+  "ouvertAuxMoteurs": false
 }

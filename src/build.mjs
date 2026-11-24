@@ -128,12 +128,15 @@ if (apercu) {
 }
 const pagesEcrites = [];
 
+const page404 = (c) => c === '/404.html';
+const pagesPrivees = ['/fr/recherche/', '/fr/autour-de-moi/', '/fr/ma-liste/', '/fr/mentions-legales/'];
+
 function ecrire(chemin, html, { sitemap = true } = {}) {
   const fichier = chemin.endsWith('/') ? `${chemin}index.html` : chemin;
   const cible = join(SORTIE, fichier);
   mkdirSync(dirname(cible), { recursive: true });
   writeFileSync(cible, apercu ? relativiser(html, fichier) : html);
-  if (sitemap && !/<meta name="robots" content="noindex">/.test(html)) pagesEcrites.push(chemin);
+  if (sitemap && !page404(chemin) && !pagesPrivees.includes(chemin)) pagesEcrites.push(chemin);
 }
 
 // Aperçu : chaque lien "/x/" devient relatif et pointe vers "x/index.html".
@@ -189,7 +192,10 @@ writeFileSync(join(SORTIE, 'version.txt'), `Cornet de route ${site.version} ${ne
 if (!apercu) {
   const aujourdhui = new Date().toISOString().slice(0, 10);
   writeFileSync(join(SORTIE, 'sitemap.xml'), `<?xml version="1.0" encoding="UTF-8"?>\n<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">\n${pagesEcrites.map((c) => `  <url><loc>${config.url}${c}</loc><lastmod>${aujourdhui}</lastmod></url>`).join('\n')}\n</urlset>\n`);
-  writeFileSync(join(SORTIE, 'robots.txt'), `User-agent: *\nDisallow: /admin/\n\nSitemap: ${config.url}/sitemap.xml\n`);
+  // Avant le lancement, tout le site reste hors des moteurs : passer "ouvertAuxMoteurs" à true pour ouvrir.
+  writeFileSync(join(SORTIE, 'robots.txt'), config.ouvertAuxMoteurs
+    ? `User-agent: *\nDisallow: /admin/\n\nSitemap: ${config.url}/sitemap.xml\n`
+    : 'User-agent: *\nDisallow: /\n');
 }
 
 console.log(`${glaciers.length} glacier(s), ${pays.length} pays, ${pagesEcrites.length} page(s) indexables → ${relative(RACINE, SORTIE)}/`);

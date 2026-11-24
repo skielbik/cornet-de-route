@@ -80,7 +80,8 @@ export function layout(site, page) {
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>${esc(titre)}</title>
 <meta name="description" content="${esc(page.description)}">
-${page.noindex || site.mode !== 'production' ? '<meta name="robots" content="noindex">' : `<link rel="canonical" href="${esc(canonique)}">`}
+${page.noindex || site.mode !== 'production' || !config.ouvertAuxMoteurs ? '<meta name="robots" content="noindex">' : ''}
+${site.mode === 'production' && !page.noindex ? `<link rel="canonical" href="${esc(canonique)}">` : ''}
 <meta property="og:type" content="${page.ogType || 'website'}">
 <meta property="og:site_name" content="${esc(config.nom)}">
 <meta property="og:title" content="${esc(page.titre || config.nom)}">
