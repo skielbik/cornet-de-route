@@ -40,7 +40,7 @@ Le site est un Worker Cloudflare sans script, qui sert le dossier `dist/` (régl
 - Commande de build : `node src/build.mjs`. Variable `NODE_VERSION` = `22`.
 - Adresse de test : `https://cornet-de-route.cornetderoute.workers.dev`.
 - `version.txt` donne la version en ligne : utile pour vérifier qu'une publication est passée.
-- Domaine : `cornetderoute.com` en domaine personnalisé du Worker ; `cornetderoute.fr` redirigé vers lui par une règle de redirection Cloudflare.
+- Domaine : `cornetderoute.com` en domaine personnalisé du Worker ; `www.cornetderoute.com` redirigé vers lui par une règle de redirection Cloudflare. Le `.fr` n'est pas utilisé.
 
 Chaque commit sur `main`, y compris depuis l'administration, republie le site en une à deux minutes.
 
