@@ -1,0 +1,46 @@
+{
+  "nom": "Olãla",
+  "pays": "France",
+  "ville": "Arcachon",
+  "distinction": 1,
+  "prix": "€€",
+  "parfum": "Mangue et pêche de vigne",
+  "notes": {
+    "gout": 4,
+    "texture": 3,
+    "ingredients": 3,
+    "parfums": 5
+  },
+  "recit": "Le front de bassin est à deux pas. Fin d'après-midi, au mois d'août, une glace à la main : vous touchez à ce qui ressemble le plus à la sérénité. Reste à choisir parmi près de soixante-dix parfums. La sérénité attendra un peu.",
+  "analyse": {
+    "gout": "Ciselé, droit dès l'attaque. Chaque parfum a exactement le goût qu'on attend, en encore un peu mieux.",
+    "texture": "Une vraie crème glacée, avec une très belle fonte.",
+    "ingredients": "Des matières bien sourcées, et tout est fait maison.",
+    "parfums": "Près de soixante-dix parfums, de la vanille au gingembre en passant par la rhubarbe. Du plus simple au plus original, chacun garde son caractère."
+  },
+  "bemol": "Un service très saisonnier, qui gagnerait à partager la passion que l'on sent dans la carte.",
+  "verdict": "Je lui accorde une boule. La carte, à elle seule, mériterait davantage : tenir soixante-dix parfums sans en sacrifier un seul est rare. Mais la texture et les matières restent justes plutôt qu'exceptionnelles, et le service ne suit pas encore. Une très bonne adresse.",
+  "adresses": [
+    {
+      "nom": "Boulevard de la Plage",
+      "adresse": "163 boulevard de la Plage, 33120 Arcachon",
+      "quartier": "Centre-ville, à côté du casino",
+      "lat": 44.66228,
+      "lng": -1.16862
+    }
+  ],
+  "options": {
+    "vegan": "",
+    "sans_lactose": "",
+    "cornet_sans_gluten": ""
+  },
+  "liens": {
+    "site": "",
+    "instagram": "https://www.instagram.com/olala.arcachon/",
+    "google_maps": ""
+  },
+  "date_visite": "2026-08-11",
+  "date_publication": "2026-11-25",
+  "photo": "",
+  "publie": true
+}
