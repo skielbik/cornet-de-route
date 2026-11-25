@@ -1,0 +1,46 @@
+{
+  "nom": "Raví",
+  "pays": "France",
+  "ville": "Lourmarin",
+  "distinction": 2,
+  "prix": "€€",
+  "parfum": "Yaourt fermier",
+  "notes": {
+    "gout": 4,
+    "texture": 4,
+    "ingredients": 4,
+    "parfums": 5
+  },
+  "recit": "Vous voilà dans un film. Une place de village au cœur du Luberon, tout l'imaginaire de la Provence, et une glace à la main. Il ne manque que la musique.",
+  "analyse": {
+    "gout": "L'audace des alliances pouvait faire craindre quelques imprécisions. Il n'en est rien : tout est juste.",
+    "texture": "Ça fonctionne. Chaque bouchée a un goût de reviens-y.",
+    "ingredients": "Local dès que c'est possible : amandes du Luberon, noisettes du Lot, et mention spéciale aux fraises de Lourmarin.",
+    "parfums": "Une diversité unique. Les alliances étonnent, puis séduisent une fois le Rubicon franchi : poire et sauge, agrumes et verveine, fraise et sureau. Des parfums de saison, pensés en collections : de l'artisanat d'art glacé."
+  },
+  "bemol": "La boutique ne vit pas toute l'année au même rythme : vérifiez les horaires avant de faire le crochet.",
+  "verdict": "Je lui accorde deux boules. Raví ose des alliances que d'autres n'imaginent pas et traite chaque glace comme une pièce de haute couture, sans que la justesse en souffre. Surprise de la carte : le yaourt fermier, qu'on n'attendait pas là. Elle mérite qu'on fasse un crochet par Lourmarin.",
+  "adresses": [
+    {
+      "nom": "Place Henri Barthélémy",
+      "adresse": "Place Henri Barthélémy, 84160 Lourmarin",
+      "quartier": "Cœur du village",
+      "lat": 43.76559,
+      "lng": 5.362923
+    }
+  ],
+  "options": {
+    "vegan": "",
+    "sans_lactose": "",
+    "cornet_sans_gluten": ""
+  },
+  "liens": {
+    "site": "https://glaces-ravi.com/",
+    "instagram": "https://www.instagram.com/glaces_ravi/",
+    "google_maps": ""
+  },
+  "date_visite": "2026-08-19",
+  "date_publication": "2026-11-25",
+  "photo": "",
+  "publie": true
+}
