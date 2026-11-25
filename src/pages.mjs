@@ -48,7 +48,7 @@ function logo() {
 
 export function layout(site, page) {
   const { config } = site;
-  const titre = page.titre ? `${page.titre} | ${config.nom}` : `${config.nom} : ${config.surtitre.toLowerCase()}`;
+  const titre = page.titre ? `${page.titre} | ${config.nom}` : `${config.nom} : ${site.accueil.surtitre.toLowerCase()}`;
   const canonique = config.url + page.chemin;
   const image = config.url + (page.image || '/icons/og.png');
   const jsonld = (page.jsonld || []).map((d) => `<script type="application/ld+json">${JSON.stringify(d).replace(/</g, '\\u003c')}</script>`).join('\n');
@@ -108,7 +108,7 @@ ${page.contenu}
 <footer class="pied">
   <div class="pied-in">
     ${logo()}
-    <p class="pied-promesse">${esc(config.promesse)}</p>
+    <p class="pied-promesse">${esc(site.accueil.titre)}</p>
     <nav aria-label="Liens du site">
       <a href="/fr/methode/">La méthode</a>
       <a href="/fr/destinations/">Destinations</a>
@@ -208,10 +208,10 @@ function filJsonld(site, liens) {
   };
 }
 
-function rechercheForm(id, valeur = '') {
+function rechercheForm(id, valeur = '', question = 'Où partez-vous ?', exemple = 'Rome, Lisbonne, Tokyo…') {
   return `<form class="recherche" action="/fr/recherche/" method="get" role="search" data-recherche>
-  <label for="${id}">Où partez-vous ?</label>
-  <div class="champ">${ICONES.recherche}<input id="${id}" name="q" type="search" value="${esc(valeur)}" placeholder="Rome, Lisbonne, Tokyo…" autocomplete="off" enterkeyhint="search"></div>
+  <label for="${id}">${esc(question)}</label>
+  <div class="champ">${ICONES.recherche}<input id="${id}" name="q" type="search" value="${esc(valeur)}" placeholder="${esc(exemple)}" autocomplete="off" enterkeyhint="search"></div>
   <div class="suggestions" role="listbox" hidden></div>
 </form>`;
 }
@@ -220,6 +220,7 @@ function rechercheForm(id, valeur = '') {
 
 export function accueil(site) {
   const { glaciers, pays } = site;
+  const A = site.accueil;
   const troisBoules = glaciers.filter((g) => g.distinction === 3);
   const recents = [...glaciers].sort((a, b) => String(b.date_publication).localeCompare(String(a.date_publication))).slice(0, 5);
   const destinations = pays.map((p) => `<a class="puce caramel" href="${p.url}">${esc(p.nom)}</a>`).join('');
@@ -227,43 +228,43 @@ export function accueil(site) {
 <section class="hero bande-vert">
   <div class="hero-in">
     <span class="hero-cornet">${cornet(3, 26, 'vert', { label: false })}</span>
-    <p class="surtitre">${esc(site.config.surtitre)}</p>
-    <h1 class="titre-xl">${esc(site.config.promesse)}</h1>
-    <p class="chapo">Les glaces d'exception du monde entier, goûtées et distinguées par un seul dégustateur, avec le même barème partout.</p>
-    ${rechercheForm('destination')}
-    <a class="bouton plein" href="/fr/autour-de-moi/#maintenant">${ICONES.autour}Autour de moi</a>
+    <p class="surtitre">${esc(A.surtitre)}</p>
+    <h1 class="titre-xl">${esc(A.titre)}</h1>
+    <p class="chapo">${esc(A.chapo)}</p>
+    ${rechercheForm('destination', '', A.recherche_question, A.recherche_exemple)}
+    <a class="bouton plein" href="/fr/autour-de-moi/#maintenant">${ICONES.autour}${esc(A.bouton_autour)}</a>
   </div>
 </section>
 ${troisBoules.length ? `
 <section class="section">
-  <div class="section-tete"><h2>Trois boules</h2><a href="/fr/recherche/#trois-boules">Tout voir</a></div>
-  <p class="doux">Des glaces d'exception, chacune une raison de partir.</p>
+  <div class="section-tete"><h2>${esc(A.trois_boules_titre)}</h2><a href="/fr/recherche/#trois-boules">Tout voir</a></div>
+  <p class="doux">${esc(A.trois_boules_texte)}</p>
   <div class="defile">${troisBoules.slice(0, 8).map(carteVitrine).join('')}</div>
 </section>` : ''}
 <section class="section">
-  <div class="section-tete"><h2>Explorer la carte</h2></div>
+  <div class="section-tete"><h2>${esc(A.carte_titre)}</h2></div>
   ${miniCarte(glaciers, '/fr/carte/', `${pluriel(glaciers.length, 'glacier', 'glaciers')} · ${pluriel(pays.length, 'pays', 'pays')}`)}
   <a class="bouton contour" href="/fr/carte/">${ICONES.carte}Ouvrir la carte</a>
 </section>
 <section class="section">
-  <div class="section-tete"><h2>Dernières découvertes</h2></div>
+  <div class="section-tete"><h2>${esc(A.decouvertes_titre)}</h2></div>
   <ul class="lignes">${recents.map((g) => `<li><a class="ligne" href="${g.url}">${photo(g, 'vignette-petite')}<span class="ligne-texte">${distinctionCourte(g.distinction, 'creme')}<span class="ligne-nom">${esc(g.nom)}</span><span class="petit doux">${esc(g.ville)}, ${esc(g.pays)} · ajouté le ${dateFr(g.date_publication)}</span></span></a></li>`).join('')}</ul>
 </section>
 <section class="section">
-  <div class="section-tete"><h2>Destinations</h2><a href="/fr/destinations/">Toutes</a></div>
+  <div class="section-tete"><h2>${esc(A.destinations_titre)}</h2><a href="/fr/destinations/">Toutes</a></div>
   <div class="puces">${destinations}</div>
 </section>
 <section class="section">
   <div class="encart-chocolat">
-    <p class="accent">« Le même barème, de Rome à Tokyo. »</p>
-    <p>Chaque glace est goûtée, notée sur quatre critères et photographiée de la même façon. Seules les adresses distinguées sont publiées.</p>
-    <a href="/fr/methode/">Découvrir la méthode</a>
+    <p class="accent">${esc(A.methode_citation)}</p>
+    <p>${esc(A.methode_texte)}</p>
+    <a href="/fr/methode/">${esc(A.methode_lien)}</a>
   </div>
 </section>`;
   return layout(site, {
     chemin: '/fr/',
     actif: 'accueil',
-    description: "Cornet de route, le guide des glaciers d'exception du monde entier : un seul dégustateur, le même barème partout, seules les adresses distinguées sont publiées.",
+    description: A.description_google,
     contenu,
     scripts: ['carte'],
     jsonld: [{

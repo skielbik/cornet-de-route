@@ -8,6 +8,7 @@ Site statique sur mesure, généré par un petit programme Node **sans aucune d�
 | Dossier ou fichier | Contenu |
 | --- | --- |
 | `content/glaciers/*.json` | Une fiche par glacier. Le nom du fichier donne l'adresse de la page. |
+| `content/accueil.json` | Les textes de la page d'accueil, modifiables dans l'administration (Pages du site). |
 | `content/pays/<pays>.json`, `content/villes/<pays>-<ville>.json` | Facultatif : `{ "intro": "…" }` pour un texte d'introduction. |
 | `site.config.json` | Nom, adresse du site, seuil de la page ville (3), fond de carte (OpenFreeMap + MapLibre 5.23.0), mesure d'audience. |
 | `src/` | Le générateur (`build.mjs`), les modèles de pages (`pages.mjs`) et les composants (`lib.mjs`). |

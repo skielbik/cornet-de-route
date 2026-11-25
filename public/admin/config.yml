@@ -112,3 +112,30 @@ collections:
       - { name: photo, label: "Photo : le cornet tendu", widget: image, required: false, hint: "Format vertical 4:5, cornet centré, bras tendu." }
       - { name: date_visite, label: "Date de visite", widget: datetime, format: "YYYY-MM-DD", date_format: "DD/MM/YYYY", time_format: false, required: false }
       - { name: date_publication, label: "Date de publication", widget: datetime, format: "YYYY-MM-DD", date_format: "DD/MM/YYYY", time_format: false }
+
+  - name: pages
+    label: Pages du site
+    description: "Les textes de la page d'accueil. Chaque enregistrement republie le site en une à deux minutes."
+    editor:
+      preview: false
+    files:
+      - name: accueil
+        label: Page d'accueil
+        file: content/accueil.json
+        format: json
+        fields:
+          - { name: surtitre, label: "Surtitre (petites capitales au-dessus du titre)", widget: string }
+          - { name: titre, label: "Grand titre (la promesse, aussi reprise en bas de chaque page)", widget: string }
+          - { name: chapo, label: "Texte sous le titre", widget: text }
+          - { name: recherche_question, label: "Question au-dessus de la recherche", widget: string }
+          - { name: recherche_exemple, label: "Exemple dans le champ de recherche", widget: string }
+          - { name: bouton_autour, label: "Bouton de localisation", widget: string }
+          - { name: trois_boules_titre, label: "Titre de la section des trois boules", widget: string }
+          - { name: trois_boules_texte, label: "Texte de la section des trois boules", widget: string }
+          - { name: carte_titre, label: "Titre de la section carte", widget: string }
+          - { name: decouvertes_titre, label: "Titre de la section des dernières fiches", widget: string }
+          - { name: destinations_titre, label: "Titre de la section destinations", widget: string }
+          - { name: methode_citation, label: "Citation de l'encart chocolat", widget: string }
+          - { name: methode_texte, label: "Texte de l'encart chocolat", widget: text }
+          - { name: methode_lien, label: "Lien de l'encart chocolat", widget: string }
+          - { name: description_google, label: "Description pour Google (environ 150 caractères)", widget: text, hint: "Le texte qui s'affiche sous le titre du site dans les résultats de recherche." }

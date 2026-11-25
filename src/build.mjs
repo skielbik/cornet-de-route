@@ -117,7 +117,12 @@ for (const p of pays) {
 
 // ---------- Écriture ----------
 
-const site = { config, glaciers, pays, mode: apercu ? 'apercu' : 'production', version: Date.now().toString(36) };
+// Textes de l'accueil, modifiables depuis l'administration (content/accueil.json).
+const accueilDefaut = JSON.parse(readFileSync(join(RACINE, 'content', 'accueil.json'), 'utf8'));
+const accueilLu = lireOptionnel(join(dossierContenu, 'accueil.json'));
+const accueil = Object.fromEntries(Object.entries(accueilDefaut).map(([cle, val]) => [cle, String(accueilLu[cle] ?? '').trim() || val]));
+
+const site = { config, accueil, glaciers, pays, mode: apercu ? 'apercu' : 'production', version: Date.now().toString(36) };
 rmSync(SORTIE, { recursive: true, force: true });
 mkdirSync(SORTIE, { recursive: true });
 cpSync(join(RACINE, 'public'), SORTIE, { recursive: true });
