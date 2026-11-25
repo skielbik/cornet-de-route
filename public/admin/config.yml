@@ -122,7 +122,6 @@ collections:
       - name: accueil
         label: Page d'accueil
         file: content/accueil.json
-        format: json
         fields:
           - { name: surtitre, label: "Surtitre (petites capitales au-dessus du titre)", widget: string }
           - { name: titre, label: "Grand titre (la promesse, aussi reprise en bas de chaque page)", widget: string }
